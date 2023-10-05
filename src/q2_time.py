@@ -1,10 +1,10 @@
 import pandas as pd
 import jsonlines
 
-def q2():
+def q2_time(path_file: str):
     data = []
     # Abre el archivo JSON usando jsonlines
-    with jsonlines.open('farmers-protest-tweets-2021-2-4.json', 'r') as reader:
+    with jsonlines.open(path_file, 'r') as reader:
         for obj in reader:
             data.append(obj)
 
