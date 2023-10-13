@@ -1,5 +1,6 @@
 import emoji
 import json
+import pandas as pd
 
 def q1_memory(path_file: str):
     result = []
@@ -48,24 +49,28 @@ def q2_memory(path_file: str):
     return result
 
 def q3_memory(path_file: str):
-    result = []
 
-    emojis = {}
+    df = pd.read_json(path_file, lines=True)
 
-    with open(path_file) as f:
-        for line in f:
-            tweet = json.loads(line)
-            
-            content = tweet['content']
-            content_emojis = emoji.emoji_list(content)
-            
-            for emo in content_emojis:
+    users = {}
+
+    for i in range(len(df)):
+        mu = df['mentionedUsers'].iloc[i]
+        
+        try:
+            for user in mu:
+
                 try:
-                    emojis[emo['emoji']] += 1
-                except KeyError:
-                    emojis[emo['emoji']] = 1
+                    users[user['username']] += 1
+                except:
+                    users[user['username']] = 1
+        except:
+            continue
+            
+    final = []
 
-    for emo, count in sorted(emojis.items(), key=lambda emo: emo[1], reverse=True)[:10]:
-        result.append((emo, count))
+    for user, count in sorted(users.items(), key=lambda user: user[1], reverse=True)[:10]:
+        final.append((user, count))
+        #print(f"{user}: {count}")
 
-    return result
+    return final
