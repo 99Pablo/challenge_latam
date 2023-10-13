@@ -1,5 +1,6 @@
 import emoji
 import json
+import pandas as pd
 
 def q1_time(path_file: str):
     result = []
@@ -47,7 +48,7 @@ def q2_time(path_file: str):
 
     return result
 
-def q3_memory(path_file: str):
+def q3_time(path_file: str):
 
     df = pd.read_json(path_file, lines=True)
 
