@@ -3,27 +3,28 @@ import json
 import pandas as pd
 
 def q1_memory(path_file: str):
-    result = []
+    df = pd.read_json(path_file, lines=True)
+    # Convierte la columna 'date' al formato DateTime
+    df['date'] = pd.to_datetime(df['date'])
+    # Crea una nueva columna 'day' que contiene solo la fecha (sin la hora)
+    df['day'] = df['date'].dt.date
 
-    emojis = {}
+    def extract_user_id(user_info):
+        return user_info['username']
 
-    with open(path_file) as f:
-        for line in f:
-            tweet = json.loads(line)
-            
-            content = tweet['content']
-            content_emojis = emoji.emoji_list(content)
-            
-            for emo in content_emojis:
-                try:
-                    emojis[emo['emoji']] += 1
-                except KeyError:
-                    emojis[emo['emoji']] = 1
+    df['user_id'] = df['user'].apply(extract_user_id)
 
-    for emo, count in sorted(emojis.items(), key=lambda emo: emo[1], reverse=True)[:10]:
-        result.append((emo, count))
+    ans = df['day'].value_counts().head(10).reset_index()
 
-    return result
+    final = []
+
+    for day in ans['day']:
+        temp = df[(df['day'] == day)]
+        temp2 = temp['user_id'].value_counts().head(1).reset_index().iloc[0, 0]
+
+        final.append((day, temp2))
+        
+    return final
 
 def q2_memory(path_file: str):
     result = []
