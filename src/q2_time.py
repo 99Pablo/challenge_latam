@@ -2,18 +2,24 @@ import pandas as pd
 import jsonlines
 
 def q2_time(path_file: str):
-    data = []
-    # Abre el archivo JSON usando jsonlines
-    with jsonlines.open(path_file, 'r') as reader:
-        for obj in reader:
-            data.append(obj)
+    result = []
 
-    # Crea el DataFrame
-    df = pd.DataFrame(data)
+    emojis = {}
 
-    df['user_id'] = df['user'].apply(lambda x: x['username'])
+    with open(path_file) as f:
+        for line in f:
+            tweet = json.loads(line)
+            
+            content = tweet['content']
+            content_emojis = emoji.emoji_list(content)
+            
+            for emo in content_emojis:
+                try:
+                    emojis[emo['emoji']] += 1
+                except KeyError:
+                    emojis[emo['emoji']] = 1
 
-    return df['user_id'].value_counts().head(10)
+    for emo, count in sorted(emojis.items(), key=lambda emo: emo[1], reverse=True)[:10]:
+        result.append((emo, count))
 
-# if __name__ == '__main__':
-#     q2()
+    return result
