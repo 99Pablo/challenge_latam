@@ -1,5 +1,6 @@
+import emoji
+import json
 import pandas as pd
-import jsonlines
 
 def q2_time(path_file: str):
     result = []
