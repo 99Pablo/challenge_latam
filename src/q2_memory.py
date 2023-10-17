@@ -1,6 +1,5 @@
 import emoji
 import json
-import pandas as pd
 
 def q2_memory(path_file: str):
     result = []

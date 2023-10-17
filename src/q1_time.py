@@ -1,5 +1,3 @@
-import emoji
-import json
 import pandas as pd
 
 def q1_time(path_file: str):

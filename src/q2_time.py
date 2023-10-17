@@ -1,6 +1,5 @@
 import emoji
 import json
-import pandas as pd
 
 def q2_time(path_file: str):
     result = []

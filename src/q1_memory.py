@@ -1,5 +1,3 @@
-import emoji
-import json
 import pandas as pd
 
 def q1_memory(path_file: str):
